@@ -6,4 +6,4 @@ And follow the codes below on your terminal.
 
 `cd alfred-v1`
 `npm install`
-`npm run`
+`npm start`
