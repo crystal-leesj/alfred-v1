@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS `alfred`.`user` (
   PRIMARY KEY (`id`),
   UNIQUE INDEX `iduser_UNIQUE` (`id` ASC))
 ENGINE = InnoDB
-AUTO_INCREMENT = 2
+AUTO_INCREMENT = 5
 DEFAULT CHARACTER SET = latin1;
 
 
@@ -38,18 +38,19 @@ DEFAULT CHARACTER SET = latin1;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `alfred`.`access_auth` (
   `id` INT(11) NOT NULL,
-  `role_id` INT NOT NULL AUTO_INCREMENT,
-  `role_name` VARCHAR(45) NULL,
-  INDEX `fk_access_auth_user_idx` (`id` ASC),
-  UNIQUE INDEX `role_name_UNIQUE` (`role_name` ASC),
-  UNIQUE INDEX `role_id_UNIQUE` (`role_id` ASC),
+  `role_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `role_name` VARCHAR(45) NULL DEFAULT NULL,
   PRIMARY KEY (`role_id`),
+  UNIQUE INDEX `role_id_UNIQUE` (`role_id` ASC),
+  UNIQUE INDEX `role_name_UNIQUE` (`role_name` ASC),
+  INDEX `fk_access_auth_user_idx` (`id` ASC),
   CONSTRAINT `fk_access_auth_user`
     FOREIGN KEY (`id`)
     REFERENCES `alfred`.`user` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = latin1;
 
 
 -- -----------------------------------------------------
@@ -60,14 +61,15 @@ CREATE TABLE IF NOT EXISTS `alfred`.`patient` (
   `dob` DATE NOT NULL,
   `ssn` VARCHAR(9) NOT NULL,
   `sex` VARCHAR(1) NOT NULL,
-  INDEX `fk_patient_user1_idx` (`id` ASC),
   PRIMARY KEY (`id`),
+  INDEX `fk_patient_user1_idx` (`id` ASC),
   CONSTRAINT `fk_patient_user1`
     FOREIGN KEY (`id`)
     REFERENCES `alfred`.`user` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = latin1;
 
 
 -- -----------------------------------------------------
@@ -76,15 +78,48 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `alfred`.`visit` (
   `patient_id` INT(11) NOT NULL,
   `visit_id` INT(11) NOT NULL,
-  `InOut` TINYINT(1) NULL,
-  `start_date` DATETIME NULL,
-  `end_date` DATETIME NULL,
-  `symptoms` TEXT NULL,
+  `InOut` TINYINT(1) NULL DEFAULT NULL,
+  `start_date` DATETIME NULL DEFAULT NULL,
+  `end_date` DATETIME NULL DEFAULT NULL,
+  `symptoms` TEXT NULL DEFAULT NULL,
   PRIMARY KEY (`visit_id`),
   UNIQUE INDEX `visit_id_UNIQUE` (`visit_id` ASC),
+  INDEX `fk_visit_patient1` (`patient_id` ASC),
   CONSTRAINT `fk_visit_patient1`
     FOREIGN KEY (`patient_id`)
     REFERENCES `alfred`.`patient` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `alfred`.`role`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `alfred`.`role` (
+  `role_id` INT NOT NULL,
+  `role_name` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`role_id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `alfred`.`user_roles`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `alfred`.`user_roles` (
+  `role_id` INT NOT NULL,
+  `role_member` INT(11) NOT NULL,
+  PRIMARY KEY (`role_id`, `role_member`),
+  INDEX `role_member_idx` (`role_member` ASC),
+  CONSTRAINT `role_id`
+    FOREIGN KEY (`role_id`)
+    REFERENCES `alfred`.`role` (`role_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `role_member`
+    FOREIGN KEY (`role_member`)
+    REFERENCES `alfred`.`user` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
