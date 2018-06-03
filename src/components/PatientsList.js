@@ -39,7 +39,7 @@ class PatientsList extends Component {
             </div>
             <ul className="nav navbar-nav">
               <li>
-                <a href="#">{moment().format("YYYY-MM-DD h:mm a")}</a>
+                <a href="null">{moment().format("YYYY-MM-DD h:mm a")}</a>
               </li>
             </ul>
             <ul className="nav navbar-nav navbar-right">
@@ -56,7 +56,7 @@ class PatientsList extends Component {
                 </form>
               </li>
               <li className="active">
-                <a href="#">{this.props.location.state.username}</a>
+                <a href="null">{this.props.location.state.username}</a>
               </li>
               <li>
                 <a onClick={this.loggingOut}>
