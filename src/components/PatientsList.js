@@ -32,71 +32,67 @@ class PatientsList extends Component {
 	render() {
 		if (!this.state.patients) return <div>Loading...</div>
 		return <div>
-			<nav className="navbar navbar-inverse">
-				<div className="container-fluid">
-					<div className="navbar-header">
-						<p className="navbar-brand">Alfred</p>
-					</div>
-					<ul className="nav navbar-nav">
-						<li>
-							<a href="#">
-								{moment().format("YYYY-MM-DD h:mm a")}
-							</a>
-						</li>
-					</ul>
-					<ul className="nav navbar-nav navbar-right">
-						<li>
-							<form className="navbar-form navbar-left" action="/action_page.php">
-								<div className="input-group">
-									<input type="text" className="form-control" placeholder="Search" name="search" />
-									<div className="input-group-btn">
-										<button className="btn btn-default" type="submit">
-											<i className="glyphicon glyphicon-search" />
-										</button>
-									</div>
-								</div>
-							</form>
-						</li>
-						<li className="active">
-							<a href="#">{this.props.location.state.username}</a>
-						</li>
-						<li>
-							<a onClick={this.loggingOut}>
-								<span className="glyphicon glyphicon-log-in" /> Logout
-							</a>
-						</li>
-					</ul>
-				</div>
-			</nav>
-			<div />
-			<h2 className="text">List of Patients</h2>
-			<div className="background-container">
-					<table className="table table-striped">
-						<thead>
-							<tr>
-							<th>Firstname</th>
-							<th>Lastname</th>
-							<th>sex</th>
-							<th>DOD</th>
-							<th>ssn</th>
-							</tr>
-						</thead>
-						<tbody>
-							{
-								this.state.patients.map(patient => (
-									<tr>
-										<td>{ patient.firstname }</td>
-										<td>{patient.lastname}</td>
-										<td>{patient.sex}</td>
-										<td>{patient.dob}</td>
-										<td>{patient.ssn}</td>
-									</tr>
-								))
-							}
-						</tbody>
-					</table>
-			</div>
-		</div>;
+        <nav className="navbar navbar-inverse">
+          <div className="container-fluid">
+            <div className="navbar-header">
+              <p className="navbar-brand">Alfred</p>
+            </div>
+            <ul className="nav navbar-nav">
+              <li>
+                <a href="#">{moment().format("YYYY-MM-DD h:mm a")}</a>
+              </li>
+            </ul>
+            <ul className="nav navbar-nav navbar-right">
+              <li>
+                <form className="navbar-form navbar-left" action="/action_page.php">
+                  <div className="input-group">
+                    <input type="text" className="form-control" placeholder="Search" name="search" />
+                    <div className="input-group-btn">
+                      <button className="btn btn-default" type="submit">
+                        <i className="glyphicon glyphicon-search" />
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </li>
+              <li className="active">
+                <a href="#">{this.props.location.state.username}</a>
+              </li>
+              <li>
+                <a onClick={this.loggingOut}>
+                  <span className="glyphicon glyphicon-log-in" /> Logout
+                </a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+        <div />
+        <h2 className="text">List of Patients</h2>
+        <div className="background-container">
+          <table className="table table-striped">
+            <thead>
+              <tr>
+                <th>Firstname</th>
+                <th>M.l.</th>
+                <th>Lastname</th>
+                <th>sex</th>
+                <th>DOD</th>
+                <th>ssn</th>
+              </tr>
+            </thead>
+            <tbody>
+              {this.state.patients.map(patient => <tr>
+                  <td>{patient.first_name}</td>
+                  <td>{patient.middle_initial}</td>
+                  <td>{patient.last_name}</td>
+                  <td>{patient.sex}</td>
+                  <td>{patient.dob}</td>
+                  <td>{patient.ssn}</td>
+                </tr>)}
+            </tbody>
+          </table>
+        </div>
+      </div>;
 	}
 }
 
