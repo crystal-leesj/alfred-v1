@@ -69,7 +69,7 @@ class Login extends Component {
       <form onSubmit={this.handleSubmit}>
         <div className="form-group">
           <label className="text">
-            User name:
+            Username:
           </label>
           <input type="text" className="form-control" onChange={e => this.setState(
                 { username: e.target.value }
