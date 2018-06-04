@@ -13,7 +13,8 @@ permission to modify the database. The script contains the command
 ``USE `alfred` ``  
 
 Thus there is no need to execute this command first. Executing the script will
-setup the required tables, columns, and constraints.
+setup the required tables, columns, and constraints. If the database name is
+something other than "alfred", the scripts will need to be modified accordingly.
 
 ## Running the program
 To run the program, make sure you have a recent version of Node.js installed.
