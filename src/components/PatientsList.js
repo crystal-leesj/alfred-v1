@@ -16,6 +16,7 @@ class PatientsList extends Component {
 		const config = { headers: { Authorization: `Bearer ${token}` } }
 		axios.post(`${url}/api/records`, null, config)
 			.then((res) => {
+        console.log("records: ", res.data.result.records);
 				this.setState({ patients: res.data.result.records })
 			})
 			.catch(error => {

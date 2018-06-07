@@ -40,15 +40,27 @@ class Login extends Component {
         const token = res.data.result.auth_token;
         localStorage.setItem("token", token);
         localStorage.setItem("username", this.state.username);
-        this.props.history.push({
-          pathname: "/patients",
-          state: {
-            username: this.state.username,
-            token
-          }
-        });
+        if (res.data.result.role === "Patient") {
+          this.props.history.push({
+            pathname: "/myinfo",
+            state: {
+              username: this.state.username,
+              token
+            }
+          });          
+        }
+        if (res.data.result.role === "Healthcare Worker") {
+          this.props.history.push({
+            pathname: "/patients",
+            state: {
+              username: this.state.username,
+              token
+            }
+          }); 
+        }
       })
       .catch(error => {
+        console.log('error: ', error)
         if (error.response.status === 401){
           this.setState({ errorMessage: 'Username and password is not matched' })
         }
