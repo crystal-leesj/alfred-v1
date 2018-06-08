@@ -73,6 +73,59 @@ DEFAULT CHARACTER SET = latin1;
 
 
 -- -----------------------------------------------------
+-- Table `alfred`.`labs`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `alfred`.`labs` (
+  `patient_id` INT(11) NOT NULL,
+  `lab_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `test` VARCHAR(45) NOT NULL,
+  `datetime` DATETIME NOT NULL,
+  `result` TEXT NULL DEFAULT NULL,
+  PRIMARY KEY (`lab_id`),
+  INDEX `patient_id_idx` (`patient_id` ASC),
+  CONSTRAINT `patient_id`
+    FOREIGN KEY (`patient_id`)
+    REFERENCES `alfred`.`patient` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `alfred`.`role`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `alfred`.`role` (
+  `role_id` INT(11) NOT NULL,
+  `role_name` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`role_id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `alfred`.`user_roles`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `alfred`.`user_roles` (
+  `role_id` INT(11) NOT NULL,
+  `role_member` INT(11) NOT NULL,
+  PRIMARY KEY (`role_id`, `role_member`),
+  INDEX `role_member_idx` (`role_member` ASC),
+  CONSTRAINT `role_id`
+    FOREIGN KEY (`role_id`)
+    REFERENCES `alfred`.`role` (`role_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `role_member`
+    FOREIGN KEY (`role_member`)
+    REFERENCES `alfred`.`user` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
 -- Table `alfred`.`visit`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `alfred`.`visit` (
@@ -95,30 +148,48 @@ DEFAULT CHARACTER SET = latin1;
 
 
 -- -----------------------------------------------------
--- Table `alfred`.`role`
+-- Table `alfred`.`bloodtests`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `alfred`.`role` (
-  `role_id` INT NOT NULL,
-  `role_name` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`role_id`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `alfred`.`user_roles`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `alfred`.`user_roles` (
-  `role_id` INT NOT NULL,
-  `role_member` INT(11) NOT NULL,
-  PRIMARY KEY (`role_id`, `role_member`),
-  INDEX `role_member_idx` (`role_member` ASC),
-  CONSTRAINT `role_id`
-    FOREIGN KEY (`role_id`)
-    REFERENCES `alfred`.`role` (`role_id`)
+CREATE TABLE IF NOT EXISTS `alfred`.`bloodtests` (
+  `lab_id` INT NOT NULL,
+  `patient_ID` INT NOT NULL,
+  `date` DATE NOT NULL,
+  `performed_by` INT NULL,
+  `wbc` DECIMAL(5,2) NULL,
+  `rbc` DECIMAL(5,2) NULL,
+  `hemoglobin` DECIMAL(5,2) NULL,
+  `mcv` DECIMAL(5,2) NULL,
+  `mch` DECIMAL(5,2) NULL,
+  `mchc` DECIMAL(5,2) NULL,
+  `rdw` DECIMAL(5,2) NULL,
+  `mpv` DECIMAL(5,2) NULL,
+  `platelets` DECIMAL(5,2) NULL,
+  `neutrophils` DECIMAL(5,2) NULL,
+  `lymphocytes` DECIMAL(5,2) NULL,
+  `monocytes` DECIMAL(5,2) NULL,
+  `eosinophils` DECIMAL(5,2) NULL,
+  `basophils` DECIMAL(5,2) NULL,
+  `abs_neutrophils` DECIMAL(5,2) NULL,
+  `abs_lymphocytes` DECIMAL(5,2) NULL,
+  `abs_monocytes` DECIMAL(5,2) NULL,
+  `abs_eosinophils` DECIMAL(5,2) NULL,
+  `abs_basophils` DECIMAL(5,2) NULL,
+  `ordered_by` INT NOT NULL,
+  PRIMARY KEY (`lab_id`),
+  INDEX `patient_id_idx` (`patient_ID` ASC),
+  INDEX `ordered_by_idx` (`ordered_by` ASC),
+  CONSTRAINT `lab`
+    FOREIGN KEY (`lab_id`)
+    REFERENCES `alfred`.`labs` (`lab_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `role_member`
-    FOREIGN KEY (`role_member`)
+  CONSTRAINT `patient`
+    FOREIGN KEY (`patient_ID`)
+    REFERENCES `alfred`.`patient` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `ordered_by`
+    FOREIGN KEY (`ordered_by`)
     REFERENCES `alfred`.`user` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
